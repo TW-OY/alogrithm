@@ -1,8 +1,9 @@
+import java.util.Iterator;
 import java.util.Scanner;
 
-public class FixedCapacityStack<Item> {
+public class FixedCapacityStack<Item> implements Iterable<Item>{
     private Item[] items;
-    private int size;
+    private int size = 0;
 
     public FixedCapacityStack(int capacity) {
         items = (Item []) new Object[capacity];
@@ -40,11 +41,27 @@ public class FixedCapacityStack<Item> {
         if(size > 0 && size == items.length / 4) {
             resize(items.length / 2);
         }
-        System.out.println(items.length);
         Item item = items[--size];
         items[size] = null;
         return item;
     }
+
+    public Iterator<Item> iterator() {
+        return new ReverseIterator();
+    }
+
+    public class ReverseIterator implements Iterator<Item> {
+        private int i = size;
+        public boolean hasNext() {
+            return i > 0;
+        }
+
+        public Item next() {
+            return items[--i];
+        }
+
+    }
+
 
     public static void main(String[] args) {
         FixedCapacityStack <Integer> Stack = new FixedCapacityStack(3);
